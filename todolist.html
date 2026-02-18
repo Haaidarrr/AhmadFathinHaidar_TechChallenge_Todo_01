@@ -1,0 +1,199 @@
+<!--tugas bncc-->
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Modern To-Do List</title>
+
+<style>
+    /* Reset sederhana */
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #c3ecf7, #f5f7fa);
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .container {
+        background: white;
+        width: 400px;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .input-group {
+        display: flex;
+        margin-bottom: 20px;
+    }
+
+    input {
+        flex: 1;
+        padding: 10px;
+        border-radius: 10px 0 0 10px;
+        border: 1px solid #ccc;
+        outline: none;
+    }
+
+    button {
+        padding: 10px 15px;
+        border: none;
+        cursor: pointer;
+    }
+
+    #addBtn {
+        background: #4caf50;
+        color: white;
+        border-radius: 0 10px 10px 0;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #f9f9f9;
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        transition: 0.3s;
+    }
+
+    li.completed span {
+        text-decoration: line-through;
+        color: gray;
+    }
+
+    .left {
+        display: flex;
+        align-items: center;
+    }
+
+    .left input {
+        margin-right: 10px;
+    }
+
+    .deleteBtn {
+        background: #ff4d4d;
+        color: white;
+        border-radius: 8px;
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+
+    .deleteBtn:hover {
+        opacity: 0.8;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>My To-Do List</h2>
+
+    <!-- Input dan tombol tambah -->
+    <div class="input-group">
+        <input type="text" id="taskInput" placeholder="Tulis tugas baru...">
+        <button id="addBtn">+</button>
+    </div>
+
+    <!-- Tempat list ditampilkan -->
+    <ul id="taskList"></ul>
+</div>
+
+<script>
+
+    const addBtn = document.getElementById("addBtn");
+    const taskInput = document.getElementById("taskInput");
+    const taskList = document.getElementById("taskList");
+
+    /*
+        Fungsi untuk membuat item baru.
+        Kenapa dipisah jadi fungsi?
+        Supaya bisa dipanggil dari tombol dan juga dari enter keyboard.
+    */
+    function addTask() {
+
+        const taskText = taskInput.value.trim();
+
+        // Cegah input kosong
+        if (taskText === "") {
+            alert("Tugas tidak boleh kosong!");
+            return;
+        }
+
+        // Buat elemen <li>
+        const li = document.createElement("li");
+
+        // Bagian kiri (checkbox + teks)
+        const leftDiv = document.createElement("div");
+        leftDiv.classList.add("left");
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+
+        const span = document.createElement("span");
+        span.textContent = taskText;
+
+        leftDiv.appendChild(checkbox);
+        leftDiv.appendChild(span);
+
+        // Tombol delete
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Hapus";
+        deleteBtn.classList.add("deleteBtn");
+
+        // Event saat checkbox dicentang
+        checkbox.addEventListener("change", function() {
+            li.classList.toggle("completed");
+        });
+
+        // Event hapus
+        deleteBtn.addEventListener("click", function() {
+            taskList.removeChild(li);
+        });
+
+        // Gabungkan semuanya
+        li.appendChild(leftDiv);
+        li.appendChild(deleteBtn);
+
+        taskList.appendChild(li);
+
+        // Kosongkan input setelah ditambah
+        taskInput.value = "";
+    }
+
+    // Klik tombol tambah
+    addBtn.addEventListener("click", addTask);
+
+    // Tambah task saat tekan Enter
+    taskInput.addEventListener("keypress", function(e) {
+        if (e.key === "Enter") {
+            addTask();
+        }
+    });
+
+</script>
+
+</body>
+</html>
